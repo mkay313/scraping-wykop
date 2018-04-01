@@ -4,7 +4,7 @@ library(tidyverse)
 # how do we get the number of pages? here's a trick:
 # the penultimate <a href> has the info about the last page
 
-url <- "https://www.wykop.pl/szukaj/rak/?"
+url <- "https://www.wykop.pl/szukaj/rak/strona/"
 webpage <- read_html(url)
 page_numbers <- webpage %>%
   html_nodes(".pager") %>%
@@ -17,7 +17,6 @@ site_links <- vector(mode="character", length=0)
 # all links for a single page
 GetLinksFromSinglePage <- function(page_link) {
   webpage <- read_html(page_link)
-  print(page_link)
   this_site_links <- webpage %>%
     html_nodes("a") %>%
     html_attr("href")
@@ -26,9 +25,9 @@ GetLinksFromSinglePage <- function(page_link) {
 
 # collects links for all results
 for (i in 1:max_page) {
-  v <- c("https://www.wykop.pl/szukaj/rak/strona/", i)
-  url <- paste(v, collapse = "")
-  site_links <- c(site_links, GetLinksFromSinglePage(url))
+  v <- c(url, i)
+  this_url <- paste(v, collapse = "")
+  site_links <- c(site_links, GetLinksFromSinglePage(this_url))
 }
 
 # get only the links for "link" and "wpis" types
