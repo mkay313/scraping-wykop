@@ -16,8 +16,6 @@ content <- webpage %>%
   html_nodes("p") %>%
   html_text() %>%
   str_replace_all("\t|\n", "") %>%
-  str_replace_all("poka", "") %>%
-  str_replace_all("komentarz", "") %>%
   trimws(which = c("both"))
 content <- content[nchar(content) > 4] # removes all entries where there are < 5 characters
 
