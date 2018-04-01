@@ -15,9 +15,13 @@ content <- webpage %>%
   html_nodes(".dC") %>%
   html_nodes("p") %>%
   html_text() %>%
-  str_replace_all("\t|\n", "") %>%
+  str_replace_all("\t|\n|pokaż komentarz", "") %>%
   trimws(which = c("both"))
+
 content <- content[nchar(content) > 4] # removes all entries where there are < 5 characters
+# below is pure magic: we remove all "źródło: " entries since they are part of the same comment
+# otherwise the timestamps wouldn't work
+content <- content[sapply(content, function(x) !(any(grepl("źródło: ", x))), USE.NAMES = FALSE)==TRUE]
 
 comment_times <- webpage %>%
   html_nodes(".dC") %>%
