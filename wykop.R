@@ -36,6 +36,7 @@ if (identical(max_page, numeric(0))) {
 }
 for (i in 1:max_page) {
   site_links <- c(site_links, GetLinksFromSinglePage(url))
+  Sys.sleep(sample(seq(0.1, 1, 0.1), 1)) # wait a moment
 }
 
 # get only the links for "link" and "wpis" types
