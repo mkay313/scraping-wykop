@@ -3,7 +3,6 @@ library(tidyverse)
 
 # how do we get the number of pages? here's a trick:
 # the penultimate <a href> has the info about the last page
-
 url <- "https://www.wykop.pl/szukaj/rak/strona/"
 webpage <- read_html(url)
 page_numbers <- webpage %>%
@@ -15,8 +14,10 @@ max_page <- as.numeric(max_page_char)
 site_links <- vector(mode="character", length=0)
 
 # all links for a single page
-GetLinksFromSinglePage <- function(page_link) {
-  webpage <- read_html(page_link)
+GetLinksFromSinglePage <- function(this_url) {
+  v <- c(this_url, i)
+  this_url <- paste(v, collapse = "")
+  webpage <- read_html(this_url)
   this_site_links <- webpage %>%
     html_nodes("a") %>%
     html_attr("href")
@@ -24,10 +25,12 @@ GetLinksFromSinglePage <- function(page_link) {
 }
 
 # collects links for all results
+# if there is only a single page then the loop only runs once
+if (identical(max_page, numeric(0))) {
+  max_page <- 1
+}
 for (i in 1:max_page) {
-  v <- c(url, i)
-  this_url <- paste(v, collapse = "")
-  site_links <- c(site_links, GetLinksFromSinglePage(this_url))
+  site_links <- c(site_links, GetLinksFromSinglePage(url))
 }
 
 # get only the links for "link" and "wpis" types
@@ -35,7 +38,6 @@ link_links <- vector(mode="character", length=0)
 wpis_links <- vector(mode="character", length=0)
 
 length_site_links <- length(site_links)
-
 for (i in 1:length_site_links) {
   if (grepl("https://www.wykop.pl/link", site_links[i])) {
     link_links <- c(link_links, site_links[i])
@@ -49,4 +51,4 @@ for (i in 1:length_site_links) {
 link_links <- unique(link_links)
 wpis_links <- unique(wpis_links)
 
-# not all these links pertain to intellectual cancer so we need to remove these
+# not all these links pertain to intellectual cancer so we need to remove these manually
