@@ -1,9 +1,14 @@
 library(rvest)
 library(tidyverse)
 
+SEARCH_TERM <- "rak"
+
+#combine the search term and other url elements
+url_elements <- c("https://www.wykop.pl/szukaj/", SEARCH_TERM, "/strona/")
+url <- paste(url_elements, collapse = "")
+
 # how do we get the number of pages? here's a trick:
 # the penultimate <a href> has the info about the last page
-url <- "https://www.wykop.pl/szukaj/rak/strona/"
 webpage <- read_html(url)
 page_numbers <- webpage %>%
   html_nodes(".pager") %>%
