@@ -1,7 +1,7 @@
 library(rvest)
 library(tidyverse)
 
-SEARCH_TERM <- "rak"
+SEARCH_TERM <- "rihanna"
 
 #combine the search term and other url elements
 url_elements <- c("https://www.wykop.pl/szukaj/", SEARCH_TERM, "/strona/")
@@ -57,3 +57,7 @@ link_links <- unique(link_links)
 wpis_links <- unique(wpis_links)
 
 # not all these links pertain to intellectual cancer so we need to remove these manually
+csv_link_name <- paste(c(SEARCH_TERM, "_linki.csv"), collapse = "")
+csv_wpis_name <- paste(c(SEARCH_TERM, "_wpisy.csv"), collapse = "")
+write.csv(link_links, file = csv_link_name)
+write.csv(wpis_links, file = csv_wpis_name)
