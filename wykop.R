@@ -1,5 +1,6 @@
 library(rvest)
 library(tidyverse)
+source("helper.R")
 
 SEARCH_TERM <- "rihanna"
 
@@ -7,27 +8,9 @@ SEARCH_TERM <- "rihanna"
 url_elements <- c("https://www.wykop.pl/szukaj/", SEARCH_TERM, "/strona/")
 url <- paste(url_elements, collapse = "")
 
-# how do we get the number of pages? here's a trick:
-# the penultimate <a href> has the info about the last page
-webpage <- read_html(url)
-page_numbers <- webpage %>%
-  html_nodes(".pager") %>%
-  html_nodes(".button")
-max_page_char <- page_numbers[length(page_numbers)-1] %>%
-  html_text()
-max_page <- as.numeric(max_page_char)
-site_links <- vector(mode="character", length=0)
+max_page <- GetNumberOfSubPages(url)
 
-# all links for a single page
-GetLinksFromSinglePage <- function(this_url) {
-  v <- c(this_url, i)
-  this_url <- paste(v, collapse = "")
-  webpage <- read_html(this_url)
-  this_site_links <- webpage %>%
-    html_nodes("a") %>%
-    html_attr("href")
-  return(this_site_links)
-}
+site_links <- vector(mode="character", length=0)
 
 # collects links for all results
 # if there is only a single page then the loop only runs once
