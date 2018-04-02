@@ -21,7 +21,8 @@ GetLinksFromSinglePage <- function(this_url) {
 
 # all comments for a single page
 GetCommentsFromSinglePage <- function(this_url) {
-  webpage <- url %>%
+  
+  webpage <- this_url %>%
     read_html(encoding = "UTF-8")
   content <- webpage %>%
     html_nodes(".dC") %>%
@@ -36,8 +37,8 @@ GetCommentsFromSinglePage <- function(this_url) {
   # below is pure magic: we remove all "źródło: " entries since they are part of the same comment
   # otherwise the timestamps wouldn't work
   content <- content[sapply(content,
-                            function(x)
-                              ! (any(grepl("źródło: ", x))), USE.NAMES = FALSE)
+                            function(x) ! (any(grepl("źródło: ", x))), 
+                            USE.NAMES = FALSE)
                      == TRUE]
   
   comment_times <- webpage %>%
@@ -52,13 +53,14 @@ GetCommentsFromSinglePage <- function(this_url) {
     str_replace_all("\n", "")
   
   # similar magic for comment times to remove all "Powiązane" entries
-  
   about_post <- about_post[sapply(about_post,
-                                  function(x)
-                                    ! (any(grepl("Zobacz więcej", x))), USE.NAMES = FALSE)
+                                  function(x) ! (any(grepl("Zobacz więcej", x))), 
+                                  USE.NAMES = FALSE)
                            == TRUE]
   
   info <- c(about_post, comment_times)
-  page_content_df <- data.frame(content = content, info = info)
+  web_addresses <- rep(this_url, length(info))
+  page_content_df <- data.frame(content = content, info = info, web_addresses = web_addresses)
+  
   return(page_content_df)
 }
