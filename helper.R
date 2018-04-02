@@ -1,4 +1,4 @@
-#subpages for a page -- work both for search results and comments under individual posts
+#subpages for a page -- works both for search results and comments under individual posts
 GetNumberOfSubPages <- function (this_url) {
   webpage <- read_html(this_url)
   page_numbers <- webpage %>%
@@ -21,7 +21,6 @@ GetLinksFromSinglePage <- function(this_url) {
 
 # all comments for a single page
 GetCommentsFromSinglePage <- function(this_url) {
-  
   webpage <- this_url %>%
     read_html(encoding = "UTF-8")
   content <- webpage %>%
