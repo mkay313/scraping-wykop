@@ -2,7 +2,7 @@ library(rvest)
 library(tidyverse)
 source("helper.R")
 
-SEARCH_TERM <- "rihanna"
+SEARCH_TERM <- "rak"
 
 #combine the search term and other url elements
 url_elements <- c("https://www.wykop.pl/szukaj/", SEARCH_TERM, "/strona/")
@@ -18,7 +18,8 @@ if (identical(max_page, numeric(0))) {
   max_page <- 1
 }
 for (i in 1:max_page) {
-  site_links <- c(site_links, GetLinksFromSinglePage(url))
+  abs_url <- paste(c(url,i), collapse = "")
+  site_links <- c(site_links, GetLinksFromSinglePage(abs_url))
   Sys.sleep(sample(seq(0.1, 1, 0.1), 1)) # wait a moment
 }
 
