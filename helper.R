@@ -12,8 +12,6 @@ GetNumberOfSubPages <- function (this_url) {
 
 # all links for a single page
 GetLinksFromSinglePage <- function(this_url) {
-  v <- c(this_url, i)
-  this_url <- paste(v, collapse = "")
   webpage <- read_html(this_url)
   this_site_links <- webpage %>%
     html_nodes("a") %>%

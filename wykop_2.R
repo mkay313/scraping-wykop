@@ -7,15 +7,15 @@ CSV_DATA = "linki_test.csv"
 # let's read the data and take the texts we're interested in
 
 current_df <- read.csv(CSV_DATA)
-current_csv <- current_df %>%
+current_df <- current_df %>%
   filter(Relevant == "Yes")
-length_of_current_csv = nrow(current_csv)
-results <- vector(mode="list", length=length_of_current_csv)
+length_of_current_df = nrow(current_df)
+results <- vector(mode="list", length=length_of_current_df)
 
-for (i in 1:length_of_current_csv) {
+for (i in 1:length_of_current_df) {
   print(i)
   url <-
-    paste(c(as.character(raki_relevant$x[i]), "strona/1"), collapse = "")
+    paste(c(as.character(current_df$x[i]), "strona/1"), collapse = "")
   webpage <- url %>%
     read_html(encoding = "UTF-8")
   content <- webpage %>%
