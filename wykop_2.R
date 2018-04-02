@@ -1,16 +1,18 @@
 library(tidyverse)
 library(rvest)
 
+CSV_DATA = "linki_test.csv"
+
 # we've tagged the texts manually (added a new column "Relevant" with Yes/No answers)
 # let's read the data and take the texts we're interested in
 
-raki_df <- read.csv("linki_test.csv")
-raki_relevant <- raki_df %>%
+current_df <- read.csv(CSV_DATA)
+current_csv <- current_df %>%
   filter(Relevant == "Yes")
+length_of_current_csv = nrow(current_csv)
+results <- vector(mode="list", length=length_of_current_csv)
 
-results <- vector(mode="list", length=nrow(raki_relevant))
-
-for (i in 1:nrow(raki_relevant)) {
+for (i in 1:length_of_current_csv) {
   print(i)
   url <-
     paste(c(as.character(raki_relevant$x[i]), "strona/1"), collapse = "")
